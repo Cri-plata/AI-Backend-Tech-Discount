@@ -1,0 +1,47 @@
+# Nombre del workflow. Aparecerá en la pestaña "Actions" de GitHub.
+name: Python CI
+
+# Define cuándo se debe ejecutar este workflow.
+on:
+  # Se activa con cada push a la rama 'master'.
+  push:
+    branches: [ "master" ]
+  # También se activa al crear un Pull Request dirigido a 'master'.
+  pull_request:
+    branches: [ "master" ]
+
+# Define los trabajos (jobs) que se ejecutarán.
+jobs:
+  # Nombramos nuestro único trabajo como "build" (puedes llamarlo como quieras).
+  build:
+
+    # Especifica el sistema operativo en el que se ejecutará el trabajo.
+    # 'ubuntu-latest' es rápido y el más común.
+    runs-on: ubuntu-latest
+
+    # Define la secuencia de pasos que componen el trabajo.
+    steps:
+      # 1. Clona tu repositorio en el servidor virtual.
+      # Esto descarga tu código para que el workflow pueda usarlo.
+      - name: Checkout repository
+        uses: actions/checkout@v4 # 'uses' indica que usamos una acción pre-hecha.
+
+      # 2. Configura el entorno de Python.
+      # Le decimos a GitHub qué versión de Python necesitamos.
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' # Puedes cambiar esto a la versión que uses (e.j. '3.9', '3.11')
+
+      # 3. Instala las dependencias.
+      # Este paso instala todas las librerías de tu archivo requirements.txt.
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. Ejecuta los tests.
+      # Aquí es donde le dices a GitHub cómo probar tu código.
+      # Para un proyecto Django, el comando es 'python manage.py test'.
+      - name: Run tests
+        run: python manage.py test
