@@ -19,6 +19,20 @@ jobs:
     # 'ubuntu-latest' es rápido y el más común.
     runs-on: ubuntu-latest
 
+    # --- SECCIÓN AÑADIDA ---
+    # Aquí le decimos a GitHub que inicie contenedores de servicios adicionales.
+    services:
+      # Nombramos nuestro servicio "mongodb".
+      mongodb:
+        # Usamos la imagen oficial de MongoDB desde Docker Hub.
+        # Es buena práctica usar una versión específica, como la 4.4.
+        image: mongo:4.4
+        # Mapeamos el puerto 27017 del contenedor al host del runner.
+        # Esto hace que esté disponible en localhost:27017 para nuestras pruebas.
+        ports:
+          - 27017:27017
+    # --- FIN DE LA SECCIÓN AÑADIDA ---
+
     # Define la secuencia de pasos que componen el trabajo.
     steps:
       # 1. Clona tu repositorio en el servidor virtual.
