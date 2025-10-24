@@ -137,5 +137,31 @@ from dotenv import load_dotenv
 load_dotenv()
 
 #Cargar mongo
-MONGODB_CONNECTION_STRING = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/')
+MONGODB_CONNECTION_STRING = os.getenv('MONGODB_URI', 'mongodb://mongodb:27017/')
 MONGODB_DB_NAME = os.getenv('MONGODB_DB_NAME', 'alkosto_db')
+
+
+# Configuración del caché usando Redis
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/1", 
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            # "PASSWORD": "tu_password_si_aplica",  # Descomenta si Redis tiene auth
+        }
+    }
+}
+
+# Usar Redis como backend de sesiones
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
+
+# Expiración de sesión (1 hora)
+SESSION_COOKIE_AGE = 3600  # en segundos
+SESSION_SAVE_EVERY_REQUEST = True
+
+# ============================================
+# CORS (ya lo tienes activo, pero validamos)
+# ============================================
+CORS_ALLOW_CREDENTIALS = True

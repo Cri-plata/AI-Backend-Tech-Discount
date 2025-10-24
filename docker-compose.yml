@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    # --- SECCIÓN MODIFICADA ---
+    # Ahora 'depends_on' esperará a que mongodb esté saludable
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy # Añadimos esto para Redis también
+    # --- FIN DE LA MODIFICACIÓN ---
+
+  mongodb:
+    image: mongo:4.4
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    # --- SECCIÓN AÑADIDA ---
+    # Esta sección le dice a Docker cómo comprobar si MongoDB está vivo
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    # --- FIN DE LA SECCIÓN AÑADIDA ---
+
+  redis:
+    image: redis:6
+    ports:
+      - "6379:6379"
+    # --- SECCIÓN AÑADIDA PARA REDIS ---
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    # --- FIN DE LA SECCIÓN AÑADIDA ---
+
+volumes:
+  mongo-data:

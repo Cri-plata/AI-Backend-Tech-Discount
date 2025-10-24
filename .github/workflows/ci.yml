@@ -31,8 +31,19 @@ jobs:
         # Esto hace que esté disponible en localhost:27017 para nuestras pruebas.
         ports:
           - 27017:27017
-    # --- FIN DE LA SECCIÓN AÑADIDA ---
 
+
+          # --- SERVICIO DE REDIS AÑADIDO ---
+      # Nombramos el nuevo servicio "redis"
+      redis:
+        # Usamos la imagen oficial de Redis
+        image: redis:6
+        # Exponemos el puerto para que esté disponible en localhost:6379
+        ports:
+          - 6379:6379
+
+
+    # --- FIN DE LA SECCIÓN AÑADIDA ---
     # Define la secuencia de pasos que componen el trabajo.
     steps:
       # 1. Clona tu repositorio en el servidor virtual.

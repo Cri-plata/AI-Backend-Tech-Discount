@@ -5,7 +5,7 @@ import json
 import os
 import uuid
 from datetime import datetime
-from core.chatbot.TechChatbot import TechChatbot
+from core.chatbot.techchatbot import TechChatbot
 import logging
 
 logger = logging.getLogger(__name__)

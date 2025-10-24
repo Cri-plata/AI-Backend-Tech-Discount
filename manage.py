@@ -15,6 +15,8 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
+    print("DEBUG — Current Working Directory:", os.getcwd())
+    print("DEBUG — Python Path:", sys.path)
     execute_from_command_line(sys.argv)
 
 

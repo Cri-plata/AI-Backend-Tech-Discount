@@ -28,7 +28,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         start_time = datetime.now()
 
-        # Crear crawler con el parámetro clicks
+        # Crear crawler cone l parámetro clicks
         crawler = AlkostoCrawler(clicks=options['clicks'])
         categories = options['categories']
         limit_categories = options['limit_categories']
