@@ -15,17 +15,17 @@ class MongoManager:
     def __init__(self): pass
     def save_products(self, products, category_name): 
         return len(products)
-# --------------------------------------------------------------------------
+
 
 
 class FalabellaCrawler:
     def __init__(self, clicks = None):
-        # Mismo léxico: AlkostoScraper se reemplaza por FalabellaScraper
+       
         self.scraper = FalabellaScraper() 
         self.mongo_manager = MongoManager()
         self.clicks = clicks
         
-        # Diccionario de URLs de Falabella (la única diferencia de datos con Alkosto)
+        
         self.category_urls = {
             'smartphones': 'https://www.falabella.com.co/falabella-co/category/cat1022/celulares-y-smartphones',
             'portatiles': 'https://www.falabella.com.co/falabella-co/category/cat2016/portatiles',
@@ -44,7 +44,7 @@ class FalabellaCrawler:
         print(f"📁 URL: {url}")
         print(f"🔢 Modo: {'TODOS los productos' if self.clicks is None else f'{self.clicks} clicks'}")
 
-        # La lógica es idéntica a la de Alkosto, solo cambia el scraper llamado
+    
         products, error = self.scraper.scrape_products(url, category_name, clicks=self.clicks)
 
         if error:
@@ -53,7 +53,7 @@ class FalabellaCrawler:
 
         print(f"✅ {len(products)} productos con descuento encontrados en {category_name}")
 
-        # Guardar en MongoDB
+        
         if products:
             saved_count = self.mongo_manager.save_products(products, category_name)
             print(f"💾 {saved_count} productos guardados en MongoDB")
@@ -67,7 +67,7 @@ class FalabellaCrawler:
         for category_name, url in self.category_urls.items():
             products = self.crawl_category(category_name, url)
             all_products.extend(products)
-            time.sleep(2)  # Mismo time.sleep(2) que el Alkosto original
+            time.sleep(2) 
 
         print(f"\n🎉 Crawling completado! Total: {len(all_products)} productos con descuento")
         return all_products
